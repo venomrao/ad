@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JVanime — Animated Ad</title>
+  <style>
+    :root{
+      --bg1:#0a0a0a; --bg2:#1a0000; --neon1:#ff0000; --neon2:#ffcc00; --accent:#ff8800; --glass: rgba(255,255,255,0.06);
+      --card-w:960px; --card-h:540px;
+      --ease: cubic-bezier(.2,.9,.3,1);
+      font-family: 'Poppins', system-ui, sans-serif;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:#fff;overflow:hidden}
+    .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:40px;perspective:1200px}
+
+    /* Ad Card */
+    .card{width:var(--card-w);height:var(--card-h);border-radius:24px;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.9);background:linear-gradient(135deg, rgba(20,20,20,0.95), rgba(30,0,0,0.85));border:1px solid var(--glass);display:flex;gap:28px;padding:28px;animation:cardIn 1s var(--ease) forwards;transform-style:preserve-3d}
+
+    /* Neon Glow Border */
+    .card::before{content:'';position:absolute;inset:0;padding:2px;border-radius:24px;background:linear-gradient(90deg,var(--neon1),var(--neon2),var(--accent));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:glow 6s linear infinite;}
+    @keyframes glow{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+
+    /* Left: visual hero */
+    .hero{flex:1;position:relative;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#000}
+    .portal{
+      width:360px;height:360px;border-radius:50%;background: conic-gradient(from 120deg,var(--neon1),var(--neon2),#ff3333,#ffcc33);display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(255,0,0,0.3), inset 0 0 80px rgba(255,204,0,0.1);animation:spin 10s linear infinite, pulse 3s ease-in-out infinite;
+    }
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+
+    .logo-mock{z-index:2;text-align:center;animation:flicker 3s infinite;position:relative}
+    .logo-mock h1{margin:0;font-size:42px;letter-spacing:-1px;text-shadow:0 0 20px var(--neon1)}
+    .logo-mock p{margin:6px 0 0 0;font-size:14px;opacity:0.9}
+
+    .character{
+      position:absolute;bottom:-20px;right:-20px;width:200px;height:auto;z-index:3;animation:float 6s ease-in-out infinite;
+    }
+
+    @keyframes flicker{0%,19%,21%,23%,25%,54%,56%,100%{opacity:1}20%,24%,55%{opacity:.6}}
+
+    /* Floating silhouettes */
+    .silhouette{position:absolute;width:140px;height:200px;background:linear-gradient(180deg,#0000,#0002);border-radius:8px;opacity:0.25;mix-blend-mode:screen;filter:blur(6px)}
+    .s1{left:12%;top:6%;animation:float 4s ease-in-out infinite;background:linear-gradient(180deg, rgba(255,0,0,0.2), rgba(255,204,0,0.1));}
+    .s2{right:12%;bottom:10%;animation:float 5s ease-in-out infinite reverse;background:linear-gradient(180deg, rgba(255,204,0,0.2), rgba(255,0,0,0.1));}
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-20px)}100%{transform:translateY(0)}}
+
+    /* Right: copy & CTA */
+    .copy{width:420px;display:flex;flex-direction:column;justify-content:center;animation:fadeInRight 1.2s var(--ease) forwards;opacity:0}
+    @keyframes fadeInRight{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+    .eyebrow{font-size:12px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:2px}
+    .headline{font-size:36px;margin:10px 0 12px 0;line-height:1.1}
+    .headline strong{background:linear-gradient(90deg,var(--neon1),var(--neon2));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 12px rgba(255,255,255,0.2)}
+    .sub{font-size:15px;opacity:0.85;margin-bottom:22px}
+
+    .badges{display:flex;gap:10px;margin-bottom:20px}
+    .badge{padding:8px 12px;border-radius:999px;font-weight:700;font-size:13px;background:linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.08);box-shadow:0 6px 20px rgba(36,11,3,0.25);display:inline-flex;align-items:center;gap:8px;animation:popIn .6s ease forwards;opacity:0}
+    .badge:nth-child(1){animation-delay:1.2s;color:var(--neon1)}
+    .badge:nth-child(2){animation-delay:1.4s;color:var(--neon2)}
+    .badge:nth-child(3){animation-delay:1.6s;color:var(--accent)}
+    @keyframes popIn{to{opacity:1;transform:scale(1)}}
+
+    .dot{width:10px;height:10px;border-radius:50%;box-shadow:0 0 10px currentColor;background:currentColor}
+
+    .cta{display:flex;gap:12px;align-items:center}
+    .btn-primary{padding:14px 24px;border-radius:14px;background:linear-gradient(90deg,var(--neon1),var(--neon2));font-weight:800;border:none;cursor:pointer;box-shadow:0 12px 40px rgba(255,136,0,0.35);transform:translateY(0);transition:all .25s var(--ease);color:#fff}
+    .btn-primary:hover{transform:translateY(-6px) scale(1.05);box-shadow:0 18px 50px rgba(255,204,0,0.45)}
+    .btn-ghost{padding:12px 20px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);background:transparent;font-weight:700;cursor:pointer;color:#fff;transition:all .25s var(--ease)}
+    .btn-ghost:hover{background:rgba(255,255,255,0.06)}
+
+    /* Animated text typing */
+    .typing{color:transparent;background:linear-gradient(90deg,var(--neon1),var(--neon2));-webkit-background-clip:text;background-clip:text;font-weight:800}
+
+    /* entrance animations */
+    @keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+    /* Responsive */
+    @media (max-width:1080px){:root{--card-w:840px} .card{flex-direction:column;height:auto;padding:18px;width:720px}.hero{height:420px}.copy{width:auto}}
+    @media (max-width:640px){.card{width:95vw;padding:14px;border-radius:12px;flex-direction:column}.portal{width:260px;height:260px}.headline{font-size:26px}.logo-mock h1{font-size:30px}.character{width:150px}}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <article class="card" role="region" aria-label="JVanime promotional ad">
+      <section class="hero" aria-hidden="true">
+        <div class="silhouette s1"></div>
+        <div class="silhouette s2"></div>
+
+        <div class="portal" aria-hidden="true">
+          <div class="logo-mock">
+            <h1>JVanime</h1>
+            <p>Stream · Discover · Connect</p>
+          </div>
+        </div>
+
+        <!-- Anime character image -->
+        <img src="itachi-removebg-preview.png" alt="Anime character" class="character" />
+      </section>
+
+      <aside class="copy">
+        <div class="eyebrow">Streaming · Anime · Community</div>
+        <h2 class="headline"><span class="typing" id="typed">Your world of anime starts here.</span></h2>
+        <p class="sub">Simulcasts, classics, and hidden gems — all in one place. Join the JVanime universe and never miss a moment.</p>
+
+        <div class="badges">
+          <div class="badge"><span class="dot"></span> Dub + Sub</div>
+          <div class="badge"><span class="dot"></span> New Episodes</div>
+          <div class="badge"><span class="dot"></span> Free to Watch</div>
+        </div>
+
+        <div class="cta">
+          <button class="btn-primary" id="primaryBtn" onclick="go()">Watch Now →</button>
+          <button class="btn-ghost" onclick="explore()">Explore</button>
+        </div>
+
+        <div class="meta">Visit <strong>JVanime.com</strong> — Your anime universe.</div>
+      </aside>
+    </article>
+  </div>
+
+  <script>
+    // Typing-like reveal
+    const txt = 'Your world of anime starts here.';
+    const el = document.getElementById('typed');
+    let i = 0;
+    function typeTick(){
+      if(i <= txt.length){
+        el.textContent = txt.slice(0,i);
+        i++;
+        setTimeout(typeTick, 32);
+      }
+    }
+    setTimeout(typeTick, 500);
+
+    // Simple click handlers (replace with real links)
+    function go(){ window.open('https://jvanime.example','_self'); }
+    function explore(){ window.open('https://jvanime.example/collections','_self'); }
+
+    // Enter key triggers primary button
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ document.getElementById('primaryBtn').click(); }});
+  </script>
+</body>
+</html>
